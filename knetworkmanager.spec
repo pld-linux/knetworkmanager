@@ -1,6 +1,7 @@
 %define		_snap 060606
 Summary:	knetworkmanager - KDE front end for NetworkManager
-Name:		knetworkmanager - frontend KDE dla NetowrkManager
+Summary(pl):	knetworkmanager - frontend KDE dla NetworkManagera
+Name:		knetworkmanager
 Version:	0
 Release:	0.%{_snap}.1
 License:	GPL
@@ -29,18 +30,17 @@ NetworkManager daemon. Up until now NetworkManager supports:
 - Dial-Up (PPP)
 
 %description -l pl
-KnetworkManager to frontend KDE dla NetworkManager. Dostarcza
-wyrafinowany i intuicyjny interface u¿ytkownika który umo¿lwia ³atwe
+KnetworkManager to frontend KDE dla NetworkManagera. Dostarcza
+wyrafinowany i intuicyjny interface u¿ytkownika który umo¿liwia ³atwe
 prze³±czanie miêdzy dostêpnymi sieciami.
 
-Zasiêg funkcji obejmuje mo¿liwo¶ci dostarczane przez daemona
+Zasiêg funkcji obejmuje mo¿liwo¶ci dostarczane przez demona
 NetworkManager. Na obecn± chwilê wspiera:
 - Wired Ethernet Devices (IEEE 802.3)
 - Wireless Ethernet Devices (IEEE 802.11): Niezaszyfrowane, WEP, WPA
   Personal, WPA Enterprise
 - Virtual Private Network (VPN): OpenVPN, VPNC
 - Dial-Up (PPP)
-
 
 %prep
 %setup -q -n %{name}
@@ -60,8 +60,7 @@ export CPPFLAGS="$CPPFLAGS -DDBUS_API_SUBJECT_TO_CHANGE"
 	--with-qt-libraries=%{_libdir} \
 	--with-extra-includes=%{_includedir}/dbus-1.0:%{_libdir}/dbus-1.0/include
 
-cd knetworkmanager
-%{__make}
+%{__make} -C knetworkmanager
 
 %install
 rm -rf $RPM_BUILD_ROOT
