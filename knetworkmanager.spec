@@ -1,10 +1,10 @@
 %define		_snap 060606
-Summary:	knetworkmanager
-Name:		knetworkmanager
+Summary:	knetworkmanager - KDE front end for NetworkManager
+Name:		knetworkmanager - frontend KDE dla NetowrkManager
 Version:	0
 Release:	0.%{_snap}.1
 License:	GPL
-Group:		Applications	
+Group:		Applications
 Source0:	%{name}-%{_snap}.tar.bz2
 # Source0-md5:	202a19f02bfd38cf2a693ee9258dfe5e
 URL:		http://en.opensuse.org/Projects/KNetworkManager
@@ -16,9 +16,32 @@ BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
+KNetworkManager is the KDE front end for NetworkManager. It provides a
+sophisticated and intuitive user interface which enables users easily
+to switch their network environment.
+
+The range of functions encompasses the features implemented by
+NetworkManager daemon. Up until now NetworkManager supports:
+- Wired Ethernet Devices (IEEE 802.3)
+- Wireless Ethernet Devices (IEEE 802.11): Unencrypted, WEP, WPA
+  Personal, WPA Enterprise
+- Virtual Private Network (VPN): OpenVPN, VPNC
+- Dial-Up (PPP)
 
 %description -l pl
- 
+KnetworkManager to frontend KDE dla NetworkManager. Dostarcza
+wyrafinowany i intuicyjny interface u¿ytkownika który umo¿lwia ³atwe
+prze³±czanie miêdzy dostêpnymi sieciami.
+
+Zasiêg funkcji obejmuje mo¿liwo¶ci dostarczane przez daemona
+NetworkManager. Na obecn± chwilê wspiera:
+- Wired Ethernet Devices (IEEE 802.3)
+- Wireless Ethernet Devices (IEEE 802.11): Niezaszyfrowane, WEP, WPA
+  Personal, WPA Enterprise
+- Virtual Private Network (VPN): OpenVPN, VPNC
+- Dial-Up (PPP)
+
+
 %prep
 %setup -q -n %{name}
 
