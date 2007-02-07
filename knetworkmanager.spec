@@ -9,6 +9,8 @@ Group:		Applications
 Source0:	%{name}-%{_snap}.tar.bz2
 # Source0-md5:	202a19f02bfd38cf2a693ee9258dfe5e
 URL:		http://en.opensuse.org/Projects/KNetworkManager
+Patch0:		kde-am.patch
+Patch1:		kde-ac260.patch
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel >= 9:3.2.0
@@ -44,6 +46,8 @@ NetworkManager. Na obecn± chwilê wspiera:
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1 
+%patch1 -p1
 
 %build
 cp -f /usr/share/automake/config.sub admin
