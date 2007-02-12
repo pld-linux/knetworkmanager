@@ -1,6 +1,6 @@
 %define		_snap 060606
 Summary:	knetworkmanager - KDE front end for NetworkManager
-Summary(pl.UTF-8):   knetworkmanager - frontend KDE dla NetworkManagera
+Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
 Version:	0
 Release:	0.%{_snap}.1
