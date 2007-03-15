@@ -1,21 +1,19 @@
-%define		_snap 060606
 Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
-Version:	0
-Release:	0.%{_snap}.1
+Version:	0.1
+Release:	1
 License:	GPL
 Group:		Applications
-Source0:	%{name}-%{_snap}.tar.bz2
-# Source0-md5:	202a19f02bfd38cf2a693ee9258dfe5e
+Source0:	http://nouse.net/projects/KNetworkManager/%{version}/%{name}-%{version}.tar.bz2
+# Source0-md5:	619dbe51e58f2794c0330c58b8c4f8bd
 URL:		http://en.opensuse.org/Projects/KNetworkManager
 Patch0:		kde-am.patch
-Patch1:		kde-ac260.patch
+BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	kdelibs-devel >= 9:3.2.0
 BuildRequires:	rpmbuild(macros) >= 1.129
-#BuildRequires:	unsermake >= 040805
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -33,8 +31,8 @@ NetworkManager daemon. Up until now NetworkManager supports:
 
 %description -l pl.UTF-8
 KnetworkManager to frontend KDE dla NetworkManagera. Dostarcza
-wyrafinowany i intuicyjny interface użytkownika który umożliwia łatwe
-przełączanie między dostępnymi sieciami.
+wyrafinowany i intuicyjny interface użytkownika który umożliwia
+łatwe przełączanie między dostępnymi sieciami.
 
 Zasięg funkcji obejmuje możliwości dostarczane przez demona
 NetworkManager. Na obecną chwilę wspiera:
@@ -45,26 +43,24 @@ NetworkManager. Na obecną chwilę wspiera:
 - Dial-Up (PPP)
 
 %prep
-%setup -q -n %{name}
-%patch0 -p1 
-%patch1 -p1
+%setup -q
+%patch0 -p1
 
 %build
 cp -f /usr/share/automake/config.sub admin
-#export PATH=/usr/share/unsermake:$PATH
-%{__make} -f admin/Makefile.common cvs
+cp -f /usr/share/libtool/ltmain.sh admin
+: > admin/libtool.m4.in
+rm -f acinclude.m4
+%{__make} -f admin/Makefile.common
 
-export CXXFLAGS="$CXXFLAGS -DDBUS_API_SUBJECT_TO_CHANGE"
-export CPPFLAGS="$CPPFLAGS -DDBUS_API_SUBJECT_TO_CHANGE"
 %configure \
+	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
+	--with-distro=pld \
 %if "%{_lib}" == "lib64"
 	--enable-libsuffix=64 \
 %endif
-	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
-	--with-qt-libraries=%{_libdir} \
-	--with-extra-includes=%{_includedir}/dbus-1.0:%{_libdir}/dbus-1.0/include
 
-%{__make} -C knetworkmanager
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -84,8 +80,10 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%{_pixmapsdir}/*
-%{_desktopdir}/*.desktop
-%{_iconsdir}/*/*/apps/%{name}.png
-%{_datadir}/mimelnk/application/*
-%{_datadir}/apps/%{name}
+%{_sysconfdir}/dbus-1/system.d/*
+%attr(755,root,root) %{_libdir}/*.so
+%attr(755,root,root) %{_libdir}/kde3/*.so
+%{_desktopdir}/kde/*.desktop
+%{_datadir}/apps/knetworkmanager
+%{_datadir}/config.kcfg/*
+%{_iconsdir}/*
