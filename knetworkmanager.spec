@@ -12,6 +12,8 @@ Patch0:		kde-am.patch
 BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	dbus-qt-devel >= 0.70
+BuildRequires:	hal-devel
 BuildRequires:	kdelibs-devel >= 9:3.2.0
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
