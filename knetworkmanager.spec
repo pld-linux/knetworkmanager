@@ -1,22 +1,28 @@
+
 Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
-Version:	0.1
+Version:	0.2
 Release:	1
 License:	GPL
 Group:		Applications
-Source0:	http://nouse.net/projects/KNetworkManager/%{version}/%{name}-%{version}.tar.bz2
-# Source0-md5:	619dbe51e58f2794c0330c58b8c4f8bd
+Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
+# Source0-md5:	9e1962bbc060e3dec806ff2463d2aec4
 URL:		http://en.opensuse.org/Projects/KNetworkManager
-Patch0:		kde-am.patch
 BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-qt-devel >= 0.70
+BuildRequires:	gettext-devel
 BuildRequires:	hal-devel
 BuildRequires:	kdelibs-devel >= 9:3.2.0
+BuildRequires:	kdesdk-kapptemplate >= 3:3.2.0
+BuildRequires:	libnl-devel
 BuildRequires:	libiw-devel
+BuildRequires:	libtool
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.129
+BuildRequires:	sed >= 4.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -47,20 +53,22 @@ NetworkManager. Na obecną chwilę wspiera:
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
+cp -Ra /usr/share/apps/kapptemplate/admin .
+chmod u+x admin/*.pl admin/*.sh
+
 cp -f /usr/share/automake/config.sub admin
 cp -f /usr/share/libtool/ltmain.sh admin
+sed -is 's@-ansi@@' admin/acinclude.m4.in
 : > admin/libtool.m4.in
-rm -f acinclude.m4
 %{__make} -f admin/Makefile.common
 
 %configure \
 	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
-	--with-distro=pld \
 %if "%{_lib}" == "lib64"
 	--enable-libsuffix=64 \
+	--with-distro=pld
 %endif
 
 %{__make}
