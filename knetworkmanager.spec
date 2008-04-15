@@ -1,19 +1,28 @@
-%define		_snap 060606
 Summary:	knetworkmanager - KDE front end for NetworkManager
-Summary(pl):	knetworkmanager - frontend KDE dla NetworkManagera
+Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
-Version:	0
-Release:	0.%{_snap}.1
+Version:	0.2.2
+Release:	1
 License:	GPL
 Group:		Applications
-Source0:	%{name}-%{_snap}.tar.bz2
-# Source0-md5:	202a19f02bfd38cf2a693ee9258dfe5e
+Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
+# Source0-md5:	82ba5d7987b147db783fbcb97ed74369
 URL:		http://en.opensuse.org/Projects/KNetworkManager
+BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	dbus-qt-devel >= 0.70
+BuildRequires:	gettext-devel
+BuildRequires:	hal-devel
 BuildRequires:	kdelibs-devel >= 9:3.2.0
+BuildRequires:	kdesdk-kapptemplate >= 3:3.2.0
+BuildRequires:	libiw-devel
+BuildRequires:	libnl-devel
+BuildRequires:	libtool
+BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.129
-#BuildRequires:	unsermake >= 040805
+BuildRequires:	sed >= 4.0
+Requires:	NetworkManager >= 0.2.2
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -29,13 +38,13 @@ NetworkManager daemon. Up until now NetworkManager supports:
 - Virtual Private Network (VPN): OpenVPN, VPNC
 - Dial-Up (PPP)
 
-%description -l pl
+%description -l pl.UTF-8
 KnetworkManager to frontend KDE dla NetworkManagera. Dostarcza
-wyrafinowany i intuicyjny interface u¿ytkownika który umo¿liwia ³atwe
-prze³±czanie miêdzy dostêpnymi sieciami.
+wyrafinowany i intuicyjny interface uÅ¼ytkownika ktÃ³ry umoÅ¼liwia Å‚atwe
+przeÅ‚Ä…czanie miÄ™dzy dostÄ™pnymi sieciami.
 
-Zasiêg funkcji obejmuje mo¿liwo¶ci dostarczane przez demona
-NetworkManager. Na obecn± chwilê wspiera:
+ZasiÄ™g funkcji obejmuje moÅ¼liwoÅ›ci dostarczane przez demona
+NetworkManager. Na obecnÄ… chwilÄ™ wspiera:
 - Wired Ethernet Devices (IEEE 802.3)
 - Wireless Ethernet Devices (IEEE 802.11): Niezaszyfrowane, WEP, WPA
   Personal, WPA Enterprise
@@ -43,24 +52,26 @@ NetworkManager. Na obecn± chwilê wspiera:
 - Dial-Up (PPP)
 
 %prep
-%setup -q -n %{name}
+%setup -q
 
 %build
-cp -f /usr/share/automake/config.sub admin
-#export PATH=/usr/share/unsermake:$PATH
-%{__make} -f admin/Makefile.common cvs
+cp -Ra /usr/share/apps/kapptemplate/admin .
+chmod u+x admin/*.pl admin/*.sh
 
-export CXXFLAGS="$CXXFLAGS -DDBUS_API_SUBJECT_TO_CHANGE"
-export CPPFLAGS="$CPPFLAGS -DDBUS_API_SUBJECT_TO_CHANGE"
+cp -f /usr/share/automake/config.sub admin
+cp -f /usr/share/libtool/ltmain.sh admin
+sed -is 's@-ansi@@' admin/acinclude.m4.in
+: > admin/libtool.m4.in
+%{__make} -f admin/Makefile.common
+
 %configure \
+	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
 %if "%{_lib}" == "lib64"
 	--enable-libsuffix=64 \
+	--with-distro=pld
 %endif
-	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
-	--with-qt-libraries=%{_libdir} \
-	--with-extra-includes=%{_includedir}/dbus-1.0:%{_libdir}/dbus-1.0/include
 
-%{__make} -C knetworkmanager
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -72,6 +83,13 @@ install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_desktopdir}}
 	kde_libs_htmldir=%{_kdedocdir} \
 	kdelnkdir=%{_desktopdir} \
 
+# no -devel
+rm -f $RPM_BUILD_ROOT%{_includedir}/*.h
+
+# no .la loader
+rm -f $RPM_BUILD_ROOT%{_libdir}/kde3/knetworkmanager.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libkdeinit_knetworkmanager.la
+
 %find_lang %{name} --with-kde
 
 %clean
@@ -79,9 +97,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
-%{_pixmapsdir}/*
-%{_desktopdir}/*
-%{_iconsdir}/*/*/apps/%{name}.png
-%{_datadir}/mimelnk/application/*
-%{_datadir}/apps/%{name}
+%attr(755,root,root) %{_bindir}/knetworkmanager
+/etc/dbus-1/system.d/knetworkmanager.conf
+%attr(755,root,root) %{_libdir}/libkdeinit_knetworkmanager.so
+%attr(755,root,root) %{_libdir}/kde3/knetworkmanager.so
+%{_datadir}/apps/knetworkmanager
+%{_datadir}/config.kcfg/knetworkmanager.kcfg
+%{_datadir}/autostart/knetworkmanager.desktop
+%{_datadir}/servicetypes/knetworkmanager_plugin.desktop
+%{_datadir}/servicetypes/knetworkmanager_vpnplugin.desktop
+%{_desktopdir}/kde/knetworkmanager.desktop
+%{_iconsdir}/crystalsvg/*/apps/knetworkmanager.png
