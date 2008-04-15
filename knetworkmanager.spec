@@ -11,12 +11,12 @@
 Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
-Version:	0.2
-Release:	2
+Version:	0.2.2
+Release:	1
 License:	GPL
 Group:		Applications
 Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
-# Source0-md5:	9e1962bbc060e3dec806ff2463d2aec4
+# Source0-md5:	82ba5d7987b147db783fbcb97ed74369
 URL:		http://en.opensuse.org/Projects/KNetworkManager
 BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
