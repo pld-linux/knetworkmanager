@@ -1,13 +1,3 @@
-# TODO
-# - unpackaged
-#   /usr/include/knetworkmanager-plugin.h
-#   /usr/include/knetworkmanager-vpnplugin.h
-#   /usr/lib/kde3/knetworkmanager.la
-#   /usr/lib/libkdeinit_knetworkmanager.la
-#   /usr/share/locale/sk/LC_MESSAGES/knetworkmanager.mo
-#   /usr/share/locale/sl/LC_MESSAGES/knetworkmanager.mo
-#   /usr/share/servicetypes/knetworkmanager_plugin.desktop
-#   /usr/share/servicetypes/knetworkmanager_vpnplugin.desktop
 Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
@@ -93,6 +83,13 @@ install -d $RPM_BUILD_ROOT{%{_pixmapsdir},%{_desktopdir}}
 	kde_libs_htmldir=%{_kdedocdir} \
 	kdelnkdir=%{_desktopdir} \
 
+# no -devel
+rm -f $RPM_BUILD_ROOT%{_includedir}/*.h
+
+# no .la loader
+rm -f $RPM_BUILD_ROOT%{_libdir}/kde3/knetworkmanager.la
+rm -f $RPM_BUILD_ROOT%{_libdir}/libkdeinit_knetworkmanager.la
+
 %find_lang %{name} --with-kde
 
 %clean
@@ -100,11 +97,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/*
-/etc/dbus-1/system.d/*
-%attr(755,root,root) %{_libdir}/*.so
-%attr(755,root,root) %{_libdir}/kde3/*.so
-%{_desktopdir}/kde/*.desktop
+%attr(755,root,root) %{_bindir}/knetworkmanager
+/etc/dbus-1/system.d/knetworkmanager.conf
+%attr(755,root,root) %{_libdir}/libkdeinit_knetworkmanager.so
+%attr(755,root,root) %{_libdir}/kde3/knetworkmanager.so
 %{_datadir}/apps/knetworkmanager
-%{_datadir}/config.kcfg/*
-%{_iconsdir}/*
+%{_datadir}/config.kcfg/knetworkmanager.kcfg
+%{_datadir}/autostart/knetworkmanager.desktop
+%{_datadir}/servicetypes/knetworkmanager_plugin.desktop
+%{_datadir}/servicetypes/knetworkmanager_vpnplugin.desktop
+%{_desktopdir}/kde/knetworkmanager.desktop
+%{_iconsdir}/crystalsvg/*/apps/knetworkmanager.png
