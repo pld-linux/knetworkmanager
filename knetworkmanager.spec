@@ -1,9 +1,18 @@
-
+# TODO
+# - unpackaged
+#   /usr/include/knetworkmanager-plugin.h
+#   /usr/include/knetworkmanager-vpnplugin.h
+#   /usr/lib/kde3/knetworkmanager.la
+#   /usr/lib/libkdeinit_knetworkmanager.la
+#   /usr/share/locale/sk/LC_MESSAGES/knetworkmanager.mo
+#   /usr/share/locale/sl/LC_MESSAGES/knetworkmanager.mo
+#   /usr/share/servicetypes/knetworkmanager_plugin.desktop
+#   /usr/share/servicetypes/knetworkmanager_vpnplugin.desktop
 Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
 Version:	0.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications
 Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
@@ -17,12 +26,13 @@ BuildRequires:	gettext-devel
 BuildRequires:	hal-devel
 BuildRequires:	kdelibs-devel >= 9:3.2.0
 BuildRequires:	kdesdk-kapptemplate >= 3:3.2.0
-BuildRequires:	libnl-devel
 BuildRequires:	libiw-devel
+BuildRequires:	libnl-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.129
 BuildRequires:	sed >= 4.0
+Requires:	NetworkManager >= 0.6
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -40,8 +50,8 @@ NetworkManager daemon. Up until now NetworkManager supports:
 
 %description -l pl.UTF-8
 KnetworkManager to frontend KDE dla NetworkManagera. Dostarcza
-wyrafinowany i intuicyjny interface użytkownika który umożliwia
-łatwe przełączanie między dostępnymi sieciami.
+wyrafinowany i intuicyjny interface użytkownika który umożliwia łatwe
+przełączanie między dostępnymi sieciami.
 
 Zasięg funkcji obejmuje możliwości dostarczane przez demona
 NetworkManager. Na obecną chwilę wspiera:
@@ -91,7 +101,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/*
-%{_sysconfdir}/dbus-1/system.d/*
+/etc/dbus-1/system.d/*
 %attr(755,root,root) %{_libdir}/*.so
 %attr(755,root,root) %{_libdir}/kde3/*.so
 %{_desktopdir}/kde/*.desktop
