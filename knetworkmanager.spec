@@ -2,11 +2,12 @@ Summary:	knetworkmanager - KDE front end for NetworkManager
 Summary(pl.UTF-8):	knetworkmanager - frontend KDE dla NetworkManagera
 Name:		knetworkmanager
 Version:	0.2.2
-Release:	1
+Release:	0.svn800357.1
 License:	GPL
 Group:		Applications
-Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
-# Source0-md5:	82ba5d7987b147db783fbcb97ed74369
+#Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
+Source0:	knetworkmanager-20080424.800357.tar.bz2
+# Source0-md5:	bf4a6a3360504631284e352608371f6b
 URL:		http://en.opensuse.org/Projects/KNetworkManager
 BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
@@ -52,17 +53,10 @@ NetworkManager. Na obecną chwilę wspiera:
 - Dial-Up (PPP)
 
 %prep
-%setup -q
+%setup -q -n %{name}
 
 %build
-cp -Ra /usr/share/apps/kapptemplate/admin .
-chmod u+x admin/*.pl admin/*.sh
-
-cp -f /usr/share/automake/config.sub admin
-cp -f /usr/share/libtool/ltmain.sh admin
-sed -is 's@-ansi@@' admin/acinclude.m4.in
-: > admin/libtool.m4.in
-%{__make} -f admin/Makefile.common
+%{__make} -f Makefile.cvs
 
 %configure \
 	--%{?debug:en}%{!?debug:dis}able-debug%{?debug:=full} \
