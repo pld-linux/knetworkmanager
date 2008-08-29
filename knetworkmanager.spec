@@ -8,6 +8,7 @@ Group:		Applications
 #Source0:	ftp://ftp.kde.org/pub/kde/stable/apps/KDE3.x/network/%{name}-%{version}.tar.bz2
 Source0:	knetworkmanager-20080424.800357.tar.bz2
 # Source0-md5:	bf4a6a3360504631284e352608371f6b
+Patch0:		kde-ac260-lt.patch
 URL:		http://en.opensuse.org/Projects/KNetworkManager
 BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
@@ -54,6 +55,7 @@ NetworkManager. Na obecną chwilę wspiera:
 
 %prep
 %setup -q -n %{name}
+%patch0 -p1
 
 %build
 %{__make} -f Makefile.cvs
@@ -84,12 +86,10 @@ rm -f $RPM_BUILD_ROOT%{_includedir}/*.h
 rm -f $RPM_BUILD_ROOT%{_libdir}/kde3/knetworkmanager.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/libkdeinit_knetworkmanager.la
 
-%find_lang %{name} --with-kde
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f %{name}.lang
+%files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/knetworkmanager
 /etc/dbus-1/system.d/knetworkmanager.conf
