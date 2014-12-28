@@ -12,7 +12,7 @@ BuildRequires:	NetworkManager-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	dbus-qt-devel >= 0.70
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	hal-devel
 BuildRequires:	kdelibs-devel >= 9:3.2.0
 BuildRequires:	kdesdk-kapptemplate >= 3:3.2.0
